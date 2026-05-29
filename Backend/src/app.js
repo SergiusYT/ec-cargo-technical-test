@@ -1,6 +1,7 @@
 const express = require('express'); //Framework para poder contruir mi servidor
 const cors = require('cors'); //para que me permita realizar peticiones de diferentes sitios en este caso a la API
 const errorHandler = require('./middlewares/errorHandler'); //el errorHandler.js que tengo
+const productRoutes = require('./routes/products.routes'); //routes
 
 const app = express(); //crear la app express
 
