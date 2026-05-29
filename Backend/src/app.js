@@ -6,6 +6,7 @@ const app = express(); //crear la app express
 
 app.use(cors());
 app.use(express.json()); //Peticiones en JSON
+app.use('/products', productRoutes); //Esto lo agrego para que funcione todo lo relacion con peticiones con la API
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' }); //Mini test para que pueda verficar si el server me responde
