@@ -69,5 +69,4 @@ const useProducts = (preloadedProducts = []) => {
 };
 
 
-
 export default useProducts;
