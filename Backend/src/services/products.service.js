@@ -14,7 +14,7 @@ const getAllProducts = async () => {
     id: product.id,
     name: product.title,
     category: product.category,
-    price: parseFloat((product.price * 1.19).toFixed(2)), // impuesto 19%
+    price: parseFloat((product.price * 1.19).toFixed(2)), // IVA del 19% solo a productos externos de la API
     stock: Math.floor(Math.random() * 20) + 1, // Fake Store no tiene stock
   }));
     return [...fakeProducts, ...localProducts]; // combina los productos de la API con los que vayamos creando en la sesión
@@ -79,7 +79,7 @@ const createProduct = async (productData) => {
     id: existingProducts.length + 1,
     name,
     category,
-    price: parseFloat((price * 1.19).toFixed(2)),
+    price: parseFloat(price.toFixed(2)), //El usuario ya define el precio final que pondra
     stock,
   };
 
@@ -87,5 +87,6 @@ const createProduct = async (productData) => {
   localProducts.push(newProduct);
   return newProduct;
 };
+
 
 module.exports = { getAllProducts, searchProducts, createProduct };
