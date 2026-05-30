@@ -263,3 +263,33 @@ h1 {
   from { opacity: 1; }
   to { opacity: 0; }
 }
+
+@media (max-width: 768px) {
+  .text {
+    font-size: 2rem;
+    letter-spacing: 4px;
+  }
+
+  .welcome-footer p {
+    font-size: 16px;
+  }
+
+  .welcome-sub {
+    font-size: 13px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .text {
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+  }
+
+  .welcome-footer p {
+    font-size: 13px;
+  }
+
+  .welcome-sub {
+    font-size: 11px !important;
+  }
+}
