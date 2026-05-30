@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { getProducts, createProduct } from '../services/products.service';
+import { getProducts, createProduct, searchProducts } from '../services/products.service';
 
-const useProducts = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
+const useProducts = (preloadedProducts = []) => {
+  const [products, setProducts] = useState(preloadedProducts);
+  const [loading, setLoading] = useState(preloadedProducts.length === 0);
   const [error, setError] = useState(null);
 
   const fetchProducts = async () => {
@@ -18,6 +18,13 @@ const useProducts = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (preloadedProducts.length === 0) {
+      fetchProducts();
+    }
+  }, []);
+
 
   const addProduct = async (productData) => {
     setLoading(true);
@@ -57,10 +64,6 @@ const useProducts = () => {
         setLoading(false);
     }
     };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
 
   return { products, loading, error, fetchProducts, addProduct, searchProducts };
 };
