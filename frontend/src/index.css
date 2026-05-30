@@ -253,34 +253,191 @@ h1 {
 }
 
 /* Search */
-.search-bar {
+.form-container {
   display: flex;
-  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
+  padding: 0;
+  box-sizing: border-box;
+  color: #fff;
   margin-bottom: 20px;
-  background: #fff;
-  padding: 16px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-.search-bar input {
-  flex: 1;
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
+.newsletter-form-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
 
-.search-bar button {
-  padding: 8px 20px;
-  background-color: #4a90e2;
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  align-items: center;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  width: 100%;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.nebula-input {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 120px;
+}
+
+.nebula-input .input {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
+  border: 2px solid #2a2a3a;
+  background: #00000f;
   color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
+  font-size: 16px;
+  outline: none;
+  border-radius: 8px;
+  transition: all 0.4s ease-out;
+  box-sizing: border-box;
 }
 
+.nebula-input .user-label {
+  position: absolute;
+  left: 40px;
+  top: 12px;
+  pointer-events: none;
+  color: #46b0ef;
+  transition: all 0.4s ease-out;
+  background: #00000f;
+  padding: 0 5px;
+  z-index: 1;
+}
+
+.nebula-input .input:focus {
+  border-color: #46b0ef;
+  box-shadow:
+    0 5px 8px rgba(94, 246, 254, 0.3),
+    0 10px 20px rgba(99, 254, 241, 0.2),
+    0 15px 40px rgba(16, 255, 207, 0.15),
+    0 20px 60px rgba(2, 197, 211, 0.1);
+}
+
+.nebula-input .input:focus ~ .user-label,
+.nebula-input .input:valid ~ .user-label {
+  transform: translateY(-25px);
+  font-size: 12px;
+  color: #46b0ef;
+  left: 7px;
+  background: #00000f;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  fill: #6a6a8a;
+  transition: fill 0.4s ease-out;
+}
+
+.nebula-input .input:focus ~ .search-icon {
+  fill: #46b0ef;
+}
+
+.nebula-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  top: 50%;
+  left: 7px;
+  filter: blur(0.8px);
+  mix-blend-mode: screen;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.nebula-input .input:focus ~ .nebula-particle {
+  animation: nebula-float 2s forwards ease-out;
+}
+
+@keyframes nebula-float {
+  0% {
+    transform: translate(0, -50%) scale(0.8);
+    opacity: 0;
+    background: #46b0ef
+  }
+  20% { opacity: 0.8; }
+  100% {
+    transform: translate(calc(var(--x) * 140px), calc(var(--y) * 35px)) scale(1.1);
+    opacity: 0;
+    background: #6df2ff;
+  }
+}
+
+.subscribe-button {
+  flex-shrink: 0;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #46b0ef;
+  background: #00000f;
+  border: 2px solid #46b0ef;
+  border-radius: 8px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.4s ease-out;
+}
+
+.subscribe-button:hover:not(:disabled),
+.subscribe-button:focus:not(:disabled) {
+  background: #64c1f7;
+  color: #fff;
+  border-color: #70c6f8;
+  box-shadow:
+    0 5px 8px rgba(181, 106, 255, 0.3),
+    0 10px 20px rgba(181, 106, 255, 0.2);
+  transform: translateY(-3px);
+}
+
+.subscribe-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.clear-btn {
+  color: #aaa;
+  border-color: #555;
+}
+
+.clear-btn:hover {
+  background: #555 !important;
+  color: #fff !important;
+  border-color: #aaa !important;
+}
+
+@media (max-width: 480px) {
+  .input-group {
+    flex-direction: column;
+    gap: 6px;
+  }
+  .subscribe-button {
+    width: 100%;
+  }
+}
 /* ===================== WELCOME SCREEN ===================== */
 .welcome-screen {
   background: rgb(20, 5, 5);
