@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getProducts, createProduct, searchProducts as searchProductsAPI } from '../services/products.service';
 
-const MIN_LOADING_MS = 3000;
+const MIN_LOADING_MS = 3100;
 
 const useProducts = (preloadedProducts = []) => {
   const [products, setProducts] = useState(preloadedProducts);
