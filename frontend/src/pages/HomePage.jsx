@@ -4,8 +4,8 @@ import ProductForm from '../components/ProductForm';
 import Spinner from '../components/Spinner';
 import SearchBar from '../components/SearchBar';
 
-const HomePage = () => {
-  const { products, loading, error, addProduct, searchProducts } = useProducts();
+const HomePage = ({ preloadedProducts }) => {
+  const { products, loading, error, addProduct, searchProducts } = useProducts(preloadedProducts);
 
   return (
     <div className="home-page">
