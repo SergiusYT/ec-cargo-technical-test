@@ -1,0 +1,77 @@
+
+> backend@1.0.0 test
+> jest --verbose
+
+  console.error
+    Todos los campos son obligatorios
+
+      1 | const errorHandler = (err, req, res, next) => {
+    > 2 |   console.error(err.message);
+        |           ^
+      3 |
+      4 |   const status = err.status || 500;
+      5 |   const message = err.message || 'Internal Server Error';
+
+      at error (src/middlewares/errorHandler.js:2:11)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at Immediate.next (node_modules/router/index.js:291:5)
+      at Immediate._onImmediate (node_modules/router/index.js:688:15)
+
+  console.error
+    El precio y las existencias deben ser valores positivos
+
+      1 | const errorHandler = (err, req, res, next) => {
+    > 2 |   console.error(err.message);
+        |           ^
+      3 |
+      4 |   const status = err.status || 500;
+      5 |   const message = err.message || 'Internal Server Error';
+
+      at error (src/middlewares/errorHandler.js:2:11)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at Immediate.next (node_modules/router/index.js:291:5)
+      at Immediate._onImmediate (node_modules/router/index.js:688:15)
+
+  console.error
+    El precio y las existencias deben ser valores positivos
+
+      1 | const errorHandler = (err, req, res, next) => {
+    > 2 |   console.error(err.message);
+        |           ^
+      3 |
+      4 |   const status = err.status || 500;
+      5 |   const message = err.message || 'Internal Server Error';
+
+      at error (src/middlewares/errorHandler.js:2:11)
+      at Layer.handleError (node_modules/router/lib/layer.js:116:17)
+      at trimPrefix (node_modules/router/index.js:340:13)
+      at node_modules/router/index.js:297:9
+      at processParams (node_modules/router/index.js:582:12)
+      at Immediate.next (node_modules/router/index.js:291:5)
+      at Immediate._onImmediate (node_modules/router/index.js:688:15)
+
+PASS src/tests/products.test.js
+  GET /products
+    ✓ debe retornar un array de productos con status 200 (1109 ms)
+    ✓ cada producto debe tener las propiedades requeridas (571 ms)
+  POST /products
+    ✓ debe retornar 401 si no se envia token (7 ms)
+    ✓ debe retornar 403 si el token es invalido (2 ms)
+    ✓ debe retornar 400 si faltan campos obligatorios (15 ms)
+    ✓ debe retornar 400 si el precio es negativo (4 ms)
+    ✓ debe retornar 400 si el stock es negativo (4 ms)
+  GET /products/search
+    ✓ debe retornar 400 si no se envia el parametro q (2 ms)
+    ✓ debe retornar un array al buscar con parametro valido (1073 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       9 passed, 9 total
+Snapshots:   0 total
+Time:        3.103 s
+Ran all test suites.
