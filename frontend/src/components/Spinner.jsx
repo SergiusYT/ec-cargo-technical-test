@@ -5,12 +5,12 @@ const FONTS = [
   'Trebuchet MS', 'Palatino', 'Verdana', 'Arial Black'
 ];
 
-const Spinner = ({ onDone, minMs = 2500 }) => {
+const Spinner = ({ minMs = 1500, loading, onHide }) => {
   const textRef = useRef(null);
-  const overlayRef = useRef(null);
-  const [phase, setPhase] = useState('enter'); // 'enter' | 'hold' | 'exit'
+  const [phase, setPhase] = useState('enter');
+  const minDone = useRef(false);
+  const loadingDone = useRef(false);
 
-  // Cambio de fuente continuo
   useEffect(() => {
     let index = 0;
     const interval = setInterval(() => {
@@ -22,38 +22,37 @@ const Spinner = ({ onDone, minMs = 2500 }) => {
     return () => clearInterval(interval);
   }, []);
 
-  // Secuencia de animación
-  useEffect(() => {
-    // 1. Entra (400ms de CSS) → hold
-    const enterTimer = setTimeout(() => {
-      setPhase('hold');
-    }, 400);
-
-    // 2. Después del minMs total, inicia salida
-    const exitTimer = setTimeout(() => {
+  const tryExit = () => {
+    if (minDone.current && loadingDone.current) {
       setPhase('exit');
+      setTimeout(() => onHide?.(), 600); // espera animación de salida
+    }
+  };
+
+  // Tiempo mínimo
+  useEffect(() => {
+    const enterTimer = setTimeout(() => setPhase('hold'), 400);
+    const minTimer = setTimeout(() => {
+      minDone.current = true;
+      tryExit();
     }, minMs);
-
-    // 3. Cuando termina la salida (exit dura 600ms), avisa al padre
-    const doneTimer = setTimeout(() => {
-      onDone?.();
-    }, minMs + 600);
-
     return () => {
       clearTimeout(enterTimer);
-      clearTimeout(exitTimer);
-      clearTimeout(doneTimer);
+      clearTimeout(minTimer);
     };
-  }, [minMs, onDone]);
+  }, []);
+
+  // Cuando el hook termina de cargar
+  useEffect(() => {
+    if (!loading) {
+      loadingDone.current = true;
+      tryExit();
+    }
+  }, [loading]);
 
   return (
-    <div
-      ref={overlayRef}
-      className={`spinner-overlay spinner-overlay--${phase}`}
-    >
-      {/* Barra roja inferior inspirada en el original */}
+    <div className={`spinner-overlay spinner-overlay--${phase}`}>
       <div className="spinner-red-bar" />
-
       <div className="spinner-text-wrapper">
         <span className="spinner-text" ref={textRef}>Cargando</span>
         <div className="spinner-bar" />

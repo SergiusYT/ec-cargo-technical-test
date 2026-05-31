@@ -53,13 +53,17 @@ const ProductForm = ({ onSubmit, loading }) => {
   };
 
   const handlePriceChange = (e) => {
-    const raw = parseCOP(e.target.value);
+        const raw = parseCOP(e.target.value);
     if (raw === '' || (!isNaN(raw) && Number(raw) >= 0)) {
       setPriceDisplay(formatCOP(e.target.value));
       setForm(prev => ({ ...prev, price: raw }));
       setErrors(prev => ({ ...prev, price: '' }));
     }
   };
+
+      const priceWithVAT = form.price
+      ? Number(form.price * 1.19).toLocaleString('es-CO')
+      : null;
 
   const handleStockChange = (e) => {
     const value = e.target.value.replace(/\D/g, ''); // solo enteros positivos
@@ -77,7 +81,7 @@ const ProductForm = ({ onSubmit, loading }) => {
     const result = await onSubmit({
       name: form.name,
       category: form.category,
-      price: Number(form.price),
+      price: parseFloat((Number(form.price) * 1.19).toFixed(2)), // ← con IVA
       stock: Number(form.stock),
     });
     if (result?.success) {
@@ -132,6 +136,18 @@ const ProductForm = ({ onSubmit, loading }) => {
               inputMode="numeric"
             />
           </div>
+
+          {/*Hago un Preview del IVA solo si aparece cuando haya precio escrito */}
+          {priceWithVAT && (
+            <span style={{
+              fontSize: '13px',
+              color: '#46b0ef',
+              paddingLeft: '1em',
+              opacity: 0.8,
+            }}>
+              Precio final con IVA (19%): ${priceWithVAT}
+            </span>
+          )}
           {errors.price && <span className="form-error">{errors.price}</span>}
 
       
