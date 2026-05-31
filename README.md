@@ -5,7 +5,13 @@
 ---
 
 ## 🚀 Demo en vivo
-> 🔗 *Próximamente desplegado en Render / Vercel*
+
+| Servicio | URL | Plataforma |
+|----------|-----|------------|
+| 🌐 **Frontend** | [ec-cargo-technical-test.onrender.com](https://ec-cargo-technical-test.onrender.com) | Render |
+| ⚙️ **Backend** | [ec-cargo-technical-test-production.up.railway.app](https://ec-cargo-technical-test-production.up.railway.app) | Railway |
+
+> **Nota:** El plan gratuito de Render hace que el frontend tarde ~30 segundos en cargar la primera vez si estuvo inactivo. Es comportamiento normal del tier gratuito.
 
 ---
 
@@ -20,6 +26,7 @@
 - [Lógica de Negocio](#-lógica-de-negocio)
 - [Autenticación](#-autenticación)
 - [Pruebas Unitarias](#-pruebas-unitarias)
+- [Despliegue](#-despliegue)
 - [Instalación y Ejecución](#-instalación-y-ejecución)
 - [Variables de Entorno](#-variables-de-entorno)
 - [Funcionalidades](#-funcionalidades)
@@ -77,10 +84,12 @@ Usuario → React Frontend → Node.js Backend → Fake Store API
 | Axios | 1.x | Llamadas al backend |
 | CSS3 | — | Estilos puros sin frameworks |
 
-### Herramientas
+### Herramientas y Despliegue
 
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)
+![Railway](https://img.shields.io/badge/Railway-0B0D0E?style=for-the-badge&logo=railway&logoColor=white)
 ![VSCode](https://img.shields.io/badge/VS_Code-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white)
 
 ---
@@ -140,7 +149,7 @@ MVC mezcla lógica de negocio en el controller. Con Layered Architecture, el **s
 
 ```
 📦 ec-cargos-inventory/
-├── 📁 backend/
+├── 📁 Backend/
 │   ├── 📁 src/
 │   │   ├── 📁 config/
 │   │   │   └── axios.js                # Instancia Axios → Fake Store API
@@ -164,7 +173,7 @@ MVC mezcla lógica de negocio en el controller. Con Layered Architecture, el **s
 └── 📁 frontend/
     ├── 📁 src/
     │   ├── 📁 assets/
-    │   │   └── logo.png      # Logo de EC Cargo
+    │   │   └── logo.png                # Logo de EC Cargo
     │   ├── 📁 components/
     │   │   ├── ProductTable.jsx        # Tabla con iconos por categoría
     │   │   ├── ProductForm.jsx         # Formulario dark con validaciones
@@ -197,7 +206,7 @@ main                    ← código estable, versión final entregable
       ├── feature/backend-setup     ← Express + Axios + middlewares
       ├── feature/products-api      ← 3 endpoints + lógica de negocio
       ├── feature/frontend-ui       ← toda la UI en React
-      └── feature/extras            ← auth y pruebas unitarias
+      └── feature/extras            ← auth, pruebas unitarias, despliegue
 ```
 
 **Descripción de cada rama:**
@@ -207,13 +216,14 @@ main                    ← código estable, versión final entregable
 | `feature/backend-setup` | Inicialización de Express, configuración de Axios para Fake Store, middleware de errores, health check |
 | `feature/products-api` | Implementación completa de los 3 endpoints con service layer, validaciones y lógica de negocio |
 | `feature/frontend-ui` | WelcomeScreen, ProductForm, ProductTable, SearchBar, Spinner, HomePage, estilos completos, logo EC Cargos |
-| `feature/extras` | Autenticación con token Bearer, 9 pruebas unitarias con Jest |
+| `feature/extras` | Autenticación con token Bearer, 9 pruebas unitarias con Jest, configuración de despliegue |
 
 ---
 
 ## 🔌 Endpoints de la API
 
-Base URL: `http://localhost:3000`
+Base URL local: `http://localhost:3000`
+Base URL producción: `https://ec-cargo-technical-test-production.up.railway.app`
 
 ### `GET /products`
 Obtiene todos los productos combinando Fake Store con los productos creados en sesión.
@@ -366,7 +376,7 @@ Se implementaron **9 pruebas unitarias** con Jest y Supertest cubriendo los 3 en
 ### Correr las pruebas
 
 ```bash
-cd backend
+cd Backend
 npm test
 ```
 
@@ -397,6 +407,40 @@ Tests: 9 passed, 9 total
 | `GET /products` | Respuesta 200, estructura de datos |
 | `POST /products` | Auth 401, Auth 403, campos vacíos 400, precio negativo 400, stock negativo 400 |
 | `GET /products/search` | Sin parámetro 400, búsqueda válida 200 |
+
+---
+
+## ☁️ Despliegue
+
+### Arquitectura de producción
+
+```
+Usuario
+   │
+   ▼
+Render (Frontend React)
+https://ec-cargo-technical-test.onrender.com
+   │
+   │ HTTP Request
+   ▼
+Railway (Backend Node.js)
+https://ec-cargo-technical-test-production.up.railway.app
+   │
+   │ HTTP Request
+   ▼
+Fake Store API
+https://fakestoreapi.com
+```
+
+### ¿Por qué Frontend en Render y Backend en Railway?
+
+Se intentó desplegar el backend en Render inicialmente, pero **Fake Store API bloquea con HTTP 403 las peticiones provenientes de las IPs de Render**. Se agregó un `User-Agent` personalizado como primer intento de solución (`fix: add user-agent header to bypass Fake Store API 403 on Render`), pero Fake Store bloquea por IP independientemente del header.
+
+Railway usa un pool de IPs diferente que Fake Store no bloquea, por lo que el backend se migró a Railway sin cambiar ninguna línea de lógica. El frontend se mantuvo en Render ya que los assets estáticos no tienen esta restricción.
+
+### Persistencia en producción
+
+Los productos creados via `POST /products` se almacenan en un array en memoria del servidor de Railway. Al ser el plan gratuito, Railway reinicia el servidor periódicamente, por lo que los productos creados se pierden en cada reinicio. Los 20 productos originales de Fake Store siempre están disponibles ya que se obtienen en cada petición `GET /products`.
 
 ---
 
@@ -442,14 +486,14 @@ return [...fakeStoreProducts, ...localProducts];
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/ec-cargos-inventory.git
-cd ec-cargos-inventory
+git clone https://github.com/SergiusYT/ec-cargo-technical-test.git
+cd ec-cargo-technical-test
 ```
 
 ### 2. Configurar y ejecutar el Backend
 
 ```bash
-cd backend
+cd Backend
 npm install
 cp .env.example .env
 npm run dev
@@ -478,7 +522,7 @@ El frontend corre en: `http://localhost:5173`
 ### 4. Correr las pruebas unitarias
 
 ```bash
-cd backend
+cd Backend
 npm test
 ```
 
@@ -502,7 +546,7 @@ curl -X POST http://localhost:3000/products \
 
 ## 🔐 Variables de Entorno
 
-### Backend (`backend/.env`)
+### Backend (`Backend/.env`)
 
 ```env
 PORT=3000
@@ -511,7 +555,7 @@ AUTH_TOKEN=ec-cargos-secret-token
 
 Crear el archivo copiando el ejemplo:
 ```bash
-cp backend/.env.example backend/.env
+cp Backend/.env.example Backend/.env
 ```
 
 ### Frontend (`frontend/.env`)
@@ -560,6 +604,9 @@ MVC tiende a acumular lógica en el controller. Con capas separadas, el service 
 
 **¿Por qué Fake Store con array en memoria y no base de datos?**
 La prueba técnica (Opción B) no requiere persistencia real, sino demostrar la capacidad de actuar como intermediario y transformar datos externos. El array en memoria cumple ese objetivo con honestidad técnica, documentada explícitamente en este README.
+
+**¿Por qué el backend está en Railway y no en Render?**
+Fake Store API bloquea con HTTP 403 las peticiones provenientes de las IPs de Render. Se intentó solucionar agregando un `User-Agent` personalizado en la instancia de Axios, pero el bloqueo es por IP y no por header. Railway usa un pool de IPs diferente que Fake Store no bloquea, por lo que fue la solución más limpia sin modificar la lógica del backend.
 
 **¿Por qué Vite 5 y no la última versión?**
 Node.js v18 no es compatible con Vite 6+. Vite 5 es la última versión con soporte oficial para Node 18.
