@@ -581,4 +581,4 @@ La prueba pide una autenticación simple simulada. Un token fijo en variable de 
 
 ---
 
-*Prueba Técnica — EC Cargos — 2025*
+*Prueba Técnica — EC Cargo — 2026*
