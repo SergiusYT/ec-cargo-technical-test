@@ -1,5 +1,5 @@
 # 📦 Sistema de Gestión de Inventario
-### Prueba Técnica — EC Cargos
+### Prueba Técnica — EC Cargo
 > Desarrollado por **Sergio Andrés Lozano Bueno**
 
 ---
