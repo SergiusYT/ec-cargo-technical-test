@@ -80,7 +80,7 @@ const WelcomeScreen = ({ onFinish, fading }) => {
       </div>
       <div className="welcome-footer">
         <p>Desarrollado por <strong>Sergio Andres Lozano Bueno</strong></p>
-        <p className="welcome-sub">Prueba Tecnica EC Cargos</p>
+        <p className="welcome-sub">Prueba Tecnica EC Cargo</p>
       </div>
     </div>
   );
