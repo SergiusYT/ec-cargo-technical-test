@@ -327,7 +327,7 @@ h1 {
   to   { transform: translateY(-100%); }
 }
 
-/* Barra roja inferior (homenaje al original) */
+/* Barra azul inferior*/
 .spinner-red-bar {
   position: absolute;
   bottom: 0;
@@ -391,6 +391,38 @@ h1 {
   0%   { transform: scaleX(0); opacity: 0; }
   50%  { transform: scaleX(1); opacity: 1; }
   100% { transform: scaleX(0); opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .spinner-text {
+    font-size: 2.2rem;
+    letter-spacing: 4px;
+  }
+
+  .spinner-bar {
+    width: 140px;
+  }
+
+  .spinner-sub {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .spinner-text {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+  }
+
+  .spinner-bar {
+    width: 100px;
+  }
+
+  .spinner-sub {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
 }
 
 .error-banner {
