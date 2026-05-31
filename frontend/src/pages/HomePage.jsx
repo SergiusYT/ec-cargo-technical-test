@@ -4,6 +4,7 @@ import ProductTable from '../components/ProductTable';
 import ProductForm from '../components/ProductForm';
 import Spinner from '../components/Spinner';
 import SearchBar from '../components/SearchBar';
+import logo from '../assets/logo.png';
 
 const HomePage = ({ preloadedProducts }) => {
   const { products, loading, error, addProduct, searchProducts } = useProducts(preloadedProducts);
@@ -25,7 +26,14 @@ const HomePage = ({ preloadedProducts }) => {
         />
       )}
 
-      <h1>Sistema de Inventario</h1>
+      <header className="home-header">
+        <img src={logo} alt="EC Cargos" className="home-logo" />
+        <div className="home-header-text">
+          <h1>Sistema de Inventario</h1>
+          <span className="home-header-sub">EC Cargo — Gestión de productos</span>
+        </div>
+      </header>
+
       <div className="home-layout">
         <aside className="home-sidebar">
           <ProductForm onSubmit={addProduct} loading={loading} />
