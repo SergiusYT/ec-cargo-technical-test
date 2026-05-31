@@ -6,10 +6,10 @@
 
 ## 🚀 Demo en vivo
 
-| Servicio | URL | Plataforma |
-|----------|-----|------------|
-| 🌐 **Frontend** | [ec-cargo-technical-test.onrender.com](https://ec-cargo-technical-test.onrender.com) | Render |
-| ⚙️ **Backend** | [ec-cargo-technical-test-production.up.railway.app](https://ec-cargo-technical-test-production.up.railway.app) | Railway |
+| Servicio | URL |
+|----------|-----|
+| 🌐 **Frontend** | [ec-cargo-technical-test.onrender.com](https://ec-cargo-technical-test.onrender.com) |
+| ⚙️ **Backend API** | [/health](https://ec-cargo-technical-test-production.up.railway.app/health) · [/products](https://ec-cargo-technical-test-production.up.railway.app/products) |
 
 > **Nota:** El plan gratuito de Render hace que el frontend tarde ~30 segundos en cargar la primera vez si estuvo inactivo. Es comportamiento normal del tier gratuito.
 
